@@ -178,7 +178,9 @@ public class MoIPXmlParser {
 	private String getTagValue(Document doc, String tag) {
 		NodeList nodeList = doc.getElementsByTagName(tag);
 		Node item = nodeList.item(0);
-		if (item != null) {
+		if (item != null 
+				&& item.getChildNodes() != null
+				&& item.getChildNodes().item(0) != null) {
 			return item.getChildNodes().item(0).getNodeValue();
 		}
 		
