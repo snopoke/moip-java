@@ -85,7 +85,7 @@ public class DirectPayment {
 			} else {
 				url = Config.PRODUCTION_SERVER;
 			}
-			String host = new URL(Config.TEST_SERVER).getHost();
+			String host = new URL(url).getHost();
 			HttpPost post = new HttpPost(url);
 
 			BasicHttpContext localcontext = setupAuth(client, host); 
@@ -97,11 +97,12 @@ public class DirectPayment {
 			HttpResponse response = client.execute(post, localcontext);
 
 			InputStream in = response.getEntity().getContent();
-			if (response.getStatusLine().getStatusCode() != HttpStatus.SC_OK) {
+			int responsecode = response.getStatusLine().getStatusCode();
+			if (responsecode != HttpStatus.SC_OK) {
 				// TODO: handle server errors better
 				this.response.setSuccess(false);
 				this.response.setMessage(response.getStatusLine().getReasonPhrase());
-				this.response.addError("http", response.getStatusLine().getReasonPhrase());
+				this.response.addError("http", responsecode + ": " + response.getStatusLine().getReasonPhrase());
 			} else {
 				if (parser.parseDirectPaymentResponse(in)) {
 					this.response = parser.getParsedResponse();
