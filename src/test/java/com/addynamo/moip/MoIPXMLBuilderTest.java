@@ -28,7 +28,7 @@ public class MoIPXMLBuilderTest {
 		details.setOwnerIdNumber("987654321");
 		details.setOwnerIdType("CPF");
 		details.setOwnerName("Joe Black");
-		details.setCVV("123");
+		details.setCvv("123");
 		details.setState("state");
 		details.setStreetAddress("streetAddress");
 		details.setStreetNumberAddress("2");

@@ -57,7 +57,25 @@ public class MoIPResponse {
 	public void setSuccess(boolean success) {
 		this.success = success;
 	}
+	
+	/**
+	 * Was the API call successful. 
+	 * 
+	 * Note that this does not mean that the transaction was successful, just that there was 
+	 * no error in the API call. Use {@link #getTransactionStatus()} to determine if the 
+	 * transaction was successful.
+	 * 
+	 * @return true if successful
+	 */
+	public boolean isSuccess() {
+		return success;
+	}
 
+	/**
+	 * The transaction ID
+	 * 
+	 * @return
+	 */
 	public String getId() {
 		return id;
 	}
@@ -66,6 +84,10 @@ public class MoIPResponse {
 		this.id = id;
 	}
 
+	/**
+	 * The transaction token which can be used to check the status etc.
+	 * @return
+	 */
 	public String getToken() {
 		return token;
 	}
@@ -90,6 +112,16 @@ public class MoIPResponse {
 		this.moIPTax = moIPTax;
 	}
 
+	/**
+	 * <li>Concluido - Payment has been completed, money debited and credited to the payer to the payee
+	 * <li>EmAnalise - Payment authorized by the payer, but is under review and has no guarantee that will be completed
+	 * <li>Autorizado - Payment authorized by the payer, but not yet credited to the recipient because of the floating
+	 * <li>Iniciado - Payment was initiated, but there is no guarantee that will be finalized
+	 * <li>Cancelado - Payment was canceled by those who were paying
+	 * <li>BoletoImpresso - Payment has not been confirmed, but bank bill was printed and may have been paid (there is no guarantee you will pay)
+	 * <li>Estornado - Payment has been completed, money credited to the recipient, but reversed the Portfolio MoIP
+	 * @return
+	 */
 	public String getTransactionStatus() {
 		return transactionStatus;
 	}
@@ -106,6 +138,11 @@ public class MoIPResponse {
 		this.moIPCode = moIPCode;
 	}
 
+	/**
+	 * The transaciton authorization code
+	 * 
+	 * @return
+	 */
 	public String getAuthCode() {
 		return authCode;
 	}
@@ -140,10 +177,9 @@ public class MoIPResponse {
 
 	@Override
 	public String toString() {
-		return "MoIPResponse [id=" + id + ", success=" + success + ", token=" + token + ", amount="
-				+ amount + ", moIPTax=" + moIPTax + ", transactionStatus=" + transactionStatus + ", moIPCode="
-				+ moIPCode + ", authCode=" + authCode + ", returnCode=" + returnCode + ", errors=" + errors
-				+ "]";
+		return "MoIPResponse [success=" + success + ", id=" + id + ", token=" + token + ", amount=" + amount
+				+ ", moIPTax=" + moIPTax + ", transactionStatus=" + transactionStatus + ", moIPCode=" + moIPCode
+				+ ", authCode=" + authCode + ", returnCode=" + returnCode + ", message=" + message + ", errors="
+				+ errors + "]";
 	}
-
 }

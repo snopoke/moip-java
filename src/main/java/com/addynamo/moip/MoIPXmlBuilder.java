@@ -63,6 +63,7 @@ public class MoIPXmlBuilder
 	private static final String TAG_FORMA = "Forma";
 	private static final String TAG_INSTITUICAO = "Instituicao";
 	private static final String TAG_CARTAOCREDITO = "CartaoCredito";
+	private static final String TAG_COFRE = "Cofre";
 	private static final String TAG_NUMERO = "Numero";
 	private static final String TAG_EXPIRACAO = "Expiracao";
 	private static final String TAG_CODIGOSEGURANCA = "CodigoSeguranca";
@@ -174,17 +175,20 @@ public class MoIPXmlBuilder
 			    		createElement(doc, pagamentodireto, TAG_FORMA, "CartaoCredito");
 			    		createElement(doc, pagamentodireto, TAG_INSTITUICAO, details.getBrand());
 			    		Element cartaocredito = doc.createElement(TAG_CARTAOCREDITO);
-			    			createElement(doc, cartaocredito, TAG_NUMERO, details.getCreditCardNumber());
-			    			createElement(doc, cartaocredito, TAG_EXPIRACAO, details.getExpirationDate());
-			    			createElement(doc, cartaocredito, TAG_CODIGOSEGURANCA, details.getCVV());
-			    			createElement(doc, cartaocredito, TAG_TELEFONE, details.getCellPhone());
-			    			Element portador = doc.createElement(TAG_PORTADOR);
-			    				createElement(doc, portador, TAG_NOME, details.getOwnerName());
-			    				Element identidade = createElement(doc, portador, TAG_IDENTIDADE, details.getOwnerIdNumber());
-			    					identidade.setAttribute(ATTR_TIPO, ownerIdType);
-			    				createElement(doc, portador, TAG_TELEFONE, details.getCellPhone());
-			    				createElement(doc, portador, TAG_DATANASCIMENTO, details.getOwnerBirthDate());
-			    			cartaocredito.appendChild(portador);
+				    		createElement(doc, cartaocredito, TAG_CODIGOSEGURANCA, details.getCvv());
+			    			if (details.getVaultId().isEmpty()){
+				    			createElement(doc, cartaocredito, TAG_NUMERO, details.getCreditCardNumber());
+				    			createElement(doc, cartaocredito, TAG_EXPIRACAO, details.getExpirationDate());
+				    			Element portador = doc.createElement(TAG_PORTADOR);
+				    				createElement(doc, portador, TAG_NOME, details.getOwnerName());
+				    				Element identidade = createElement(doc, portador, TAG_IDENTIDADE, details.getOwnerIdNumber());
+				    					identidade.setAttribute(ATTR_TIPO, ownerIdType);
+				    				createElement(doc, portador, TAG_TELEFONE, details.getCellPhone());
+				    				createElement(doc, portador, TAG_DATANASCIMENTO, details.getOwnerBirthDate());
+				    			cartaocredito.appendChild(portador);
+			    			} else {
+			    				createElement(doc, cartaocredito, TAG_COFRE, details.getVaultId());
+			    			}
 			    		pagamentodireto.appendChild(cartaocredito);
 			    		Element parcelemento = doc.createElement(TAG_PARCELAMENTO);
 			    			createElement(doc, parcelemento, TAG_PARCELAS, details.getInstallmentsQuantity());

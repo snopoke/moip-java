@@ -27,41 +27,65 @@
  *  
  *  @version 0.0.1
  */
+
 package com.addynamo.moip;
-
-
+/**
+ * For payment with credit card use the following fields:
+ *  creditCardNumber, expirationDate, ownerBirthDate
+ *  
+ * For payment with Vault use the following fields:
+ *  vaultId
+ *  
+ * All payments require the remaining fields including 'brand' and 'cvv'.
+ *
+ */
 public class PaymentDetails {
 	public static enum OwnerIdType {
-		CPF, RG
+		CPF, CNPJ
 	};
 
-	private String value;
-	private String brand;
-	private String creditCardNumber;
-	private String expirationDate;
-	private String cvv;
-	private String ownerName;
-	private OwnerIdType ownerIdType = OwnerIdType.CPF; // Determines if this is
-														// a CPF or RG
-	// number.
-	private String ownerIdNumber;
-	private String ownerBirthDate;
-	private String installmentsQuantity;
-	private String email;
-	private String cellPhone;
-	private String streetAddress;
-	private String streetNumberAddress;
-	private String addressComplement;
-	private String neighborhood;
-	private String city;
-	private String state;
-	private String country;
-	private String zipCode;
-	private String fixedPhone;
+	private String value = "";
+	
+	private String vaultId = "";
+	
+	private String brand = "";
+	private String creditCardNumber = "";
+	private String expirationDate = "";
+	private String cvv = "";
+	
+	private String ownerName = "";
+	private OwnerIdType ownerIdType = OwnerIdType.CPF;
+	private String ownerIdNumber = "";
+	private String ownerBirthDate = "";
+	private String installmentsQuantity = "1";
+	private String email = "";
+	private String cellPhone = "";
+	private String streetAddress = "";
+	private String streetNumberAddress = "";
+	private String addressComplement = ""; //optional
+	private String neighborhood = "";
+	private String city = "";
+	private String state = "";
+	private String country = "";
+	private String zipCode = "";
+	private String fixedPhone = "";
 
 	private String orderIdentifier;
 
 	public PaymentDetails() {
+	}
+	
+	/**
+	 * The MoIP Vault ID
+	 * 
+	 * Used to make payments without the credit card details (except CVV)
+	 */
+	public void setVaultId(String vaultId) {
+		this.vaultId = vaultId;
+	}
+	
+	public String getVaultId() {
+		return vaultId;
 	}
 
 	public String getBrand() {
@@ -72,10 +96,21 @@ public class PaymentDetails {
 	 * Definition of the payment institution to be used.
 	 * <ul>
 	 * <li>AmericanExpress
+	 * <li>Visa
 	 * <li>Diners
 	 * <li>Hipercard
 	 * <li>Mastercard
-	 * <li>Visa
+	 * <li>MoIP
+	 * <li>Diners
+	 * <li>BancoDoBrasil
+	 * <li>Bradesco
+	 * <li>Itau
+	 * <li>Unibanco
+	 * <li>BancoReal
+	 * <li>Aura
+	 * <li>Hipercard
+	 * <li>Paggo
+	 * <li>Banrisul
 	 * 
 	 * @see Instituicao
 	 * @param brand
@@ -115,7 +150,7 @@ public class PaymentDetails {
 		this.expirationDate = expirationDate;
 	}
 
-	public String getCVV() {
+	public String getCvv() {
 		return cvv;
 	}
 
@@ -125,7 +160,7 @@ public class PaymentDetails {
 	 * @see CartaoCredito:CodigoSeguranca
 	 * @param secureCode
 	 */
-	public void setCVV(String cvv) {
+	public void setCvv(String cvv) {
 		this.cvv = cvv;
 	}
 
@@ -149,15 +184,15 @@ public class PaymentDetails {
 	}
 
 	/**
-	 * Identity CPF of credit card holder
+	 * Identity CPF / CNPJ of credit card holder
 	 * 
-	 * e.g. 222.222.222-22
+	 * CPF format = XXX.XXX.XXX-XX
+	 * CNPJ format = XX.XXX.XXX/XXXX-XX
 	 * 
 	 * @see Portador:Identidade
 	 * @see Pagador:Identidade
 	 * 
 	 * @param ownerIdNumber
-	 *            format = 222.222.222-22
 	 */
 	public void setOwnerIdNumber(String ownerIdNumber) {
 		this.ownerIdNumber = ownerIdNumber;
@@ -365,13 +400,12 @@ public class PaymentDetails {
 	/**
 	 * @see Portador:Identidade@Tipo
 	 * @param ownerIdType
-	 *            CPF or RG. Defaults to CPF
+	 *            CPF (format XXX.XXX.XXX-XX)
+	 *            CNPJ (format XX.XXX.XXX/XXXX-XX).
+	 *            Defaults to CPF
 	 */
 	public void setOwnerIdType(String ownerIdType) {
-		if (ownerIdType.equals("CPF"))
-			this.ownerIdType = OwnerIdType.CPF;
-		else
-			this.ownerIdType = OwnerIdType.RG;
+		this.ownerIdType = OwnerIdType.valueOf(ownerIdType);
 	}
 
 	/**

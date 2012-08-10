@@ -37,7 +37,7 @@ public class DirectPaymentTest {
 		details.setCreditCardNumber("345678901234564");
 		details.setBrand("AmericanExpress");
 		details.setExpirationDate("12/13");
-		details.setCVV("123");
+		details.setCvv("123");
 
 		details.setOwnerName("Joe Black");
 		details.setOwnerIdNumber("111.111.111-11");
